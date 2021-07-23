@@ -1,12 +1,20 @@
 class League:
-    def __init__(self, league_id=None):
-        self.id = league_id
+    def __init__(self, league_info):
+        self.id = league_info.get('id')
+        self.slug = league_info.get('slug')
+        self.name = league_info.get('name')
+        self.region = league_info.get('region')
 
-        if self.id:
-            self.tournaments = self.get_tournaments()
+"""
+    def getLeague(self, leagueid=None):
+        if not leagueid:
+            raise(Exception("Need to specify a league name"))
 
-
-
-class Tournament:
-    def __init__(self, tournament_id=None):
-        self.id = tournament_id
+        for league in self.leagues:
+            if leagueid.isnumeric():
+                if leagueid == league.get('id'):
+                    return(League(league))
+            elif leagueid in (league.get('name'), league.get('slug')):
+                return(League(league))
+        raise(Exception("League name not found"))
+"""
