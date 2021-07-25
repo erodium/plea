@@ -4,3 +4,6 @@ class League:
         self.slug = league_info.get('slug')
         self.name = league_info.get('name')
         self.region = league_info.get('region')
+
+        self.tournaments = self.get_tournaments()
+

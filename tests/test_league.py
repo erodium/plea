@@ -1,35 +1,18 @@
-import os
-from plea import LoLget, League
-from pytest import raises
+from plea import League, LoLget, get_apikey
 import vcr
 
-DEFAULT_APIKEY = os.environ.get('DEFAULT_APIKEY', None)
 
-@vcr.use_cassette('tests/vcr_cassettes/test_league.yaml')
+APIKEY = get_apikey()
+lol = LoLget(APIKEY)
+
+@vcr.use_cassette('tests/vcr/test_league.yaml')
 def test_league():
-    lol = LoLget(DEFAULT_APIKEY)
-    lcs = lol.get_league('LCS')
+    assert isinstance(lol.lcs, League), "lol should have a league lol.lcs"
+    assert isinstance(lol.lcs.id, str), "lol.lcs invalid id"
+    assert lol.lcs.id.isnumeric(), "lol.lcs.id should be numeric"
+    assert lol.lcs.slug == 'lcs', "lol.lcs.slug wrong"
+    assert lol.lcs.name == 'LCS', 'lol.lcs.name wrong'
 
-    assert isinstance(lcs, League)
-    assert lcs.name == "LCS"
+    t = lol.lcs.list_tournaments()
 
-    lcs = lol.get_league('lcs')
-
-    assert isinstance(lcs, League)
-    assert lcs.name == "LCS"
-
-    lcs = lol.get_league('98767991299243165')
-
-    assert isinstance(lcs, League)
-    assert lcs.name == "LCS"
-
-    with raises(Exception) as ex_info:
-        lcs = lol.get_league()
-
-    assert ex_info.value.args[0] == "Need to specify a league name"
-
-
-    with raises(Exception) as ex_info:
-        lcs = lol.get_league("fakeleague")
-
-    assert str(ex_info.value) == "League name not found"
+    assert isinstance(t, list)

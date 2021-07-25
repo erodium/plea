@@ -9,3 +9,4 @@ More info about PLEA can be found at https://github.com/python-lol-esports-api/p
 
 from .lolget import LoLget
 from .league import League
+from .get_apikey import get_apikey
