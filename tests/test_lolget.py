@@ -1,15 +1,11 @@
-from plea import LoLget, get_apikey
+from plea import lolget, LoLResponse
 import vcr
 
 
-APIKEY = get_apikey()
-lol = LoLget(APIKEY)
-
 @vcr.use_cassette('tests/vcr/test_lolget.yaml')
 def test_lolget():
-    assert isinstance(lol, LoLget), "lol should be an instance of LoLget"
-    assert isinstance(lol.leagues, list), "leagues should be present as a list"
 
-def test_get_tournaments_for_league():
-    pass
-    response = lol.get_tournaments_for_league()
+    response = lolget('getLeagues')
+    assert isinstance(response, LoLResponse), "lol.get should return a LoLResponse"
+    assert response.status == 200, "get response failed"
+    assert isinstance(response.data, dict), "response not a dict"
